@@ -35,6 +35,13 @@ npm install && npm test && npm run selftest && npm run build
 - `npm run selftest`：样例解析+工具+技能+密钥不入包+面板 API
 - `npm run build`：打包 dist/client.js + 三大自检（含 treeShaking:false）
 
+
+## 安装
+
+```bash
+dsh plugin --profile web add dsh-amazon-voc
+```
+
 ## 许可
 
 MIT（liangdabiao）
