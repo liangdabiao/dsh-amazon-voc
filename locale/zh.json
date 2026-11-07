@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Amazon 评论 VOC",
+    "description": "四维价值模型评论分析：CSV 上传→标签体系→逐条打标→词频统计→用户画像。LLM 分析走宿主模型。"
+  }
+}

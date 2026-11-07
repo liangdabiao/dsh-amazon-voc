@@ -1,0 +1,5 @@
+# Amazon 评论智能分析：技能 + CSV 解析/词频/画像工具。
+# 浏览器半边由 dsh.client 声明加载。
+- insert:
+    - id: amazon-voc
+      name: 'dsh-amazon-voc'
