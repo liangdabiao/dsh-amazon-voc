@@ -4,6 +4,9 @@ DeepSeek Harness（dsh）插件：**Amazon 评论智能分析（VOC）**——�
 
 技能来自 [easy-amazon-voc](https://github.com/liangdabiao/easy-amazon-voc)（MIT，liangdabiao）。
 
+<img width="1614" height="1215" alt="image" src="https://github.com/user-attachments/assets/387574fa-fb99-456b-b61b-d60e0a37cf97" />
+
+
 ## 装上以后有什么
 
 | 能力 | 说明 |
