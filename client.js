@@ -8,6 +8,12 @@ const { useState, useEffect } = require('react')
 const PANEL_ID = 'amazon-voc'
 const BASE = 'amazon-voc'
 
+// 「马上使用」：开新对话并把 VOC 分析指令填进输入框（不直接发送，用户挂上 CSV 再回车）。
+// 走 Host 的 uiWorkspace.startSession（与「运营 Agent」「卖家工具箱」「小红书验证」同一套入口）：
+//   startSession(sessionId?, { prompt, whenDraftExists: 'keep'|'replace'|'append' })
+const USE_PROMPT = '使用‘评论VOC’插件 进行评论分析， 上传csv:'
+let openInChat = null
+
 function PanelIcon(props) {
   return h('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', ...props },
     h('rect', { x: 2.5, y: 2.5, width: 19, height: 19, rx: 5, fill: '#b45309' }),
@@ -63,8 +69,15 @@ function GuideTab() {
 }
 
 function Panel() {
-  const [tab, setTab] = useState('guide')
+  const use = () => { if (openInChat) openInChat(USE_PROMPT) }
   return h('div', { style: styles.wrap },
+    // 一键入口：开新对话并填好 VOC 指令
+    h('div', { style: styles.ctaCard },
+      h('div', { style: styles.ctaText },
+        h('div', { style: styles.ctaTitle }, '想分析一批 Amazon 评论？'),
+        h('div', { style: styles.muted },
+          '点「马上使用」→ 开新对话，输入框已填好指令；把评论 CSV 拖进对话框（或点附件按钮选文件）后回车即可。')),
+      h('button', { style: styles.ctaButton, onClick: use, title: `填进对话：${USE_PROMPT}` }, '🚀 马上使用')),
     h('div', { style: styles.row },
       h('button', { style: styles.tabActive }, '📖 四维价值模型')),
     h(GuideTab))
@@ -72,6 +85,10 @@ function Panel() {
 
 const styles = {
   wrap: { padding: 16, overflow: 'auto', height: '100%', boxSizing: 'border-box', fontFamily: '-apple-system, "Segoe UI", "Microsoft YaHei", sans-serif', fontSize: 13, color: '#1a1a1a' },
+  ctaCard: { display: 'flex', gap: 12, alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', background: '#fdf6ee', border: '1px solid #f0dcc4', borderRadius: 10, padding: '12px 14px', marginBottom: 12 },
+  ctaText: { flex: 1, minWidth: 200 },
+  ctaTitle: { fontWeight: 700, color: '#7a3a10', marginBottom: 4 },
+  ctaButton: { padding: '10px 20px', border: 'none', borderRadius: 10, background: '#b45309', color: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 700, boxShadow: '0 2px 6px rgba(180,83,9,.25)' },
   row: { display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 },
   button: { padding: '6px 14px', border: 'none', borderRadius: 8, background: '#b45309', color: '#fff', cursor: 'pointer', fontSize: 13 },
   tabActive: { padding: '8px 16px', border: '1px solid #b45309', borderRadius: 8, background: '#fdf3e7', color: '#7a3a10', fontWeight: 600, fontSize: 13 },
@@ -90,6 +107,15 @@ const styles = {
 }
 
 function apply(ctx) {
+  // 一键入口：开新对话并预填「使用‘评论VOC’插件 进行评论分析， 上传csv:」（不直接发送）
+  openInChat = (prompt) => {
+    try {
+      ctx.uiWorkspace.startSession(undefined, { prompt, whenDraftExists: 'replace' })
+    } catch (err) {
+      console.error('[amazon-voc] 开新对话失败', err)
+      alert('开新对话失败：' + ((err && err.message) || err))
+    }
+  }
   ctx.slots.inject('sidebar.panellist', () =>
     ctx.slots.register({ name: 'sidebar.panellist', id: PANEL_ID, order: 19, label: () => '评论 VOC' }, PanelIcon))
   ctx.slots.inject('main', () =>
@@ -97,5 +123,5 @@ function apply(ctx) {
 }
 
 exports.isPlugin = true
-exports.inject = ['slots']
+exports.inject = ['slots', 'uiWorkspace']
 exports.apply = apply

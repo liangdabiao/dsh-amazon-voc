@@ -39,8 +39,26 @@ npm install && npm test && npm run selftest && npm run build
 ## 安装
 
 ```bash
-dsh plugin --profile web add dsh-amazon-voc
+# 从 GitHub 装（dist/client.js 已入库，装完即有面板）
+dsh plugin --profile web add github:liangdabiao/dsh-amazon-voc
+
+# 钉版本
+dsh plugin --profile web add github:liangdabiao/dsh-amazon-voc#v0.1.1
 ```
+
+> ⚠️ 本包**没有发布到 npm**，`dsh plugin add dsh-amazon-voc` 会失败——请用上面的 `github:` 形式。
+>
+> `dist/client.js` 是入库文件：dsh 宿主直接消费已构建的客户端 bundle（`package.json` → `exports["./client"]`），缺它会导致插件激活失败、侧栏「评论 VOC」面板不出现。改完源码记得 `npm run build` 再提交。
+
+## 一键开始
+
+面板顶部有 **🚀 马上使用** 按钮：点了会开一个新对话，输入框里已经填好
+
+```
+使用‘评论VOC’插件 进行评论分析， 上传csv:
+```
+
+你把评论 CSV 拖进对话框（或点附件按钮选文件）后回车即可，模型会接着调 `voc_parse_csv`。
 
 ## 许可
 

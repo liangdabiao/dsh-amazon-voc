@@ -1,6 +1,6 @@
 {
   "name": "dsh-amazon-voc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Amazon 评论智能分析（VOC）：四维价值模型方法论 + CSV 解析/词频统计/用户画像工具。LLM 分析走宿主模型，无需 API key。",
   "license": "MIT",
   "type": "module",
@@ -47,11 +47,14 @@
     }
   },
   "devDependencies": {
-    "esbuild": "^0.25.10"
+    "esbuild": "^0.25.10",
+    "jsdom": "^26.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node test/lib.test.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
     "selftest": "node scripts/selftest.mjs",
     "prepack": "npm run build"
   },
